@@ -27,6 +27,6 @@ public class Club implements Serializable {
     @ManyToMany(mappedBy = "clubs")
     private Set<User> members = new HashSet<>();
 
-    @ManyToMany(mappedBy = "clubs")
+    @ManyToMany
     private Set<Evenement> evenements = new HashSet<>();
 }

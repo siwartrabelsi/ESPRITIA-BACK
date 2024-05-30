@@ -34,6 +34,6 @@ public class Evenement implements Serializable {
     private String statut;
     @OneToMany(mappedBy = "evenement", cascade = CascadeType.ALL)
     private Set<EspaceEvenement> espaces = new HashSet<>();
-    @ManyToMany(mappedBy = "evenements")
+    @ManyToMany
     private Set<Club> clubs = new HashSet<>();
 }
