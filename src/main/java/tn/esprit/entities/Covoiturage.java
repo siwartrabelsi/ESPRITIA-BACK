@@ -24,7 +24,7 @@ public class Covoiturage implements Serializable {
     private Date heureDepart;
 
     private String lieuDepart;
-
+//ceci est un commentaire
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
