@@ -1,11 +1,14 @@
 package tn.esprit.services;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tn.esprit.entities.Covoiturage;
 import tn.esprit.repositories.CovoiturageRepository;
 
 import java.util.List;
-
+@Service
+@AllArgsConstructor
 public class CovoiturageServices implements ICovoiturageServices {
 
     private CovoiturageRepository covoiturageRepo;

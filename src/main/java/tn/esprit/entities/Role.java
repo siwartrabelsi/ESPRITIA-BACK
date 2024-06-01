@@ -1,8 +1,9 @@
 package tn.esprit.entities;
 
 import lombok.*;
+import javax.persistence.*;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 
 @Entity
 @Getter

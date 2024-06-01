@@ -2,7 +2,10 @@ package tn.esprit.entities;
 
 import lombok.*;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;

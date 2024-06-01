@@ -2,7 +2,9 @@ package tn.esprit.entities;
 
 import lombok.*;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,7 +32,7 @@ public class Covoiturage implements Serializable {
     private IStatutCovoiturage status;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 }
