@@ -24,7 +24,12 @@ public class Covoiturage implements Serializable {
     private Date heureDepart;
 
     private String lieuDepart;
-//ceci est un commentaire
+    private int nbPlace;
+
+    @Enumerated(EnumType.STRING)
+    private IStatutCovoiturage status;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
