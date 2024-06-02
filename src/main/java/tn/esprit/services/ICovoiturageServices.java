@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface ICovoiturageServices {
     // Create
-    void addCovoiturage(Covoiturage covoiturage);
+    void addCovoiturage(Long userId ,Covoiturage covoiturage);
 
     // Read
-    Covoiturage getCovoiturageById(Long id);
-    List<Covoiturage> getAllCovoiturages();
+    Covoiturage getCovoiturageById(Long userId ,Long id);
+    List<Covoiturage> getAllCovoiturages(Long userId);
 
     // Update
-    void updateCovoiturage(Covoiturage covoiturage);
+    void updateCovoiturage(Long userId,Covoiturage covoiturage);
 
     // Delete
-   void deleteCovoiturage(Long id);
+   void deleteCovoiturage(Long userId,Long id);
 }

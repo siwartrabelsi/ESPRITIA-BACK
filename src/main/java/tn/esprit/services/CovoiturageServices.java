@@ -5,34 +5,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.entities.Covoiturage;
 import tn.esprit.repositories.CovoiturageRepository;
+import tn.esprit.repositories.UserRepository;
 
 import java.util.List;
 @Service
 @AllArgsConstructor
 public class CovoiturageServices implements ICovoiturageServices {
 
-    private CovoiturageRepository covoiturageRepo;
+    private CovoiturageRepository covoiturageRepository;
+    private UserRepository userRepository;
 
     @Override
-    public void addCovoiturage(Covoiturage covoiturage) {
-        covoiturageRepo.save(covoiturage);
+    public void addCovoiturage(Long userId, Covoiturage covoiturage) {
+        covoiturage.setUser(userRepository.findById(userId).orElse(null));
+        covoiturageRepository.save(covoiturage);
 
     }
 
-    public Covoiturage getCovoiturageById(Long id) {
-
-        return covoiturageRepo.findById(id).orElse(null);
+    public Covoiturage getCovoiturageById(Long userId, Long id) {
+        return covoiturageRepository.findByIdAndUserId(id, userId).orElse(null);
     }
 
-    public List<Covoiturage> getAllCovoiturages() {
-        return covoiturageRepo.findAll();
+    public List<Covoiturage> getAllCovoiturages(Long userId) {
+        return covoiturageRepository.findAllByUserId(userId);
     }
 
-    public void updateCovoiturage(Covoiturage covoiturage) {
-        covoiturageRepo.save(covoiturage);
+    public void updateCovoiturage(Long userId, Covoiturage covoiturage) {
+        covoiturage.setUser(userRepository.findById(userId).orElse(null));
+        covoiturageRepository.save(covoiturage);
     }
 
-    public void deleteCovoiturage(Long id) {
-        covoiturageRepo.deleteById(id);
+    public void deleteCovoiturage(Long userId, Long id) {
+        covoiturageRepository.deleteByIdAndUserId(id, userId);
     }
 }

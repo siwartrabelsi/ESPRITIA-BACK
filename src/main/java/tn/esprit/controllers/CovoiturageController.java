@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/covoiturage")
+@RequestMapping("/users/{userId}/covoiturages")
 @AllArgsConstructor
 public class CovoiturageController {
 
@@ -21,30 +21,36 @@ public class CovoiturageController {
     private ICovoiturageServices covoiturageServices;
 
     @PostMapping
-    public void addCovoiturage(@RequestBody Covoiturage covoiturage) {
-        covoiturageServices.addCovoiturage(covoiturage);
+    public void addCovoiturage(@PathVariable Long userId, @RequestBody Covoiturage covoiturage) {
+        covoiturageServices.addCovoiturage(userId, covoiturage);
     }
 
 
 
     @GetMapping("/{id}")
-    public Covoiturage getCovoiturageById(@PathVariable Long id) {
-        return covoiturageServices.getCovoiturageById(id);
+    public Covoiturage getCovoiturageById(@PathVariable Long userId, @PathVariable Long id) {
+        return covoiturageServices.getCovoiturageById(userId, id);
     }
+
 
     @GetMapping
-    public List<Covoiturage> getAllCovoiturages() {
-        return covoiturageServices.getAllCovoiturages();
+    public List<Covoiturage> getAllCovoiturages(@PathVariable Long userId) {
+        return covoiturageServices.getAllCovoiturages(userId);
     }
-
 
     @PutMapping("/{id}")
-    public void updateCovoiturage(@PathVariable Long id, @RequestBody Covoiturage covoiturage) {
-        Covoiturage existingCovoiturage = covoiturageServices.getCovoiturageById(id);
-        if (existingCovoiturage != null) {
+    public void updateCovoiturage(@PathVariable Long userId, @PathVariable Long id, @RequestBody Covoiturage covoiturage) {
+        if (covoiturageServices.getCovoiturageById(userId, id) != null) {
             covoiturage.setId(id);
-            covoiturageServices.updateCovoiturage(covoiturage);
+            covoiturageServices.updateCovoiturage(userId, covoiturage);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCovoiturage(@PathVariable Long userId, @PathVariable Long id) {
+        covoiturageServices.deleteCovoiturage(userId, id);
+    }
+
+
 
 }
