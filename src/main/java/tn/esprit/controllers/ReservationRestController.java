@@ -12,8 +12,7 @@ import java.util.List;
 public class ReservationRestController {
     @Autowired
     IReservation reservations;
-
-
+    
     @PostMapping("/add")
     public Reservation addReservation(@RequestBody Reservation reservation){
         return reservations.addReservation(reservation);
