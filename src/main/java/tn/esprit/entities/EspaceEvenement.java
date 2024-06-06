@@ -1,9 +1,13 @@
 package tn.esprit.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import jakarta.persistence.*;
+import tn.esprit.entities.Enums.TypeEquipement;
+
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,8 +27,15 @@ public class EspaceEvenement implements Serializable {
     private int capacite;
     private String description;
     private String adresse;
+    private String photo ;
+    @Enumerated(EnumType.STRING)
+    private TypeEquipement equipement;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "evenement_id")
     private Evenement evenement;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "espace")
+    private Set<Reservation> reservations;
 }
