@@ -12,6 +12,7 @@ import java.util.Set;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     @Autowired
