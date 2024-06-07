@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -23,6 +24,14 @@ public class JWTServiceImpl implements JWTService {
                 .compact();
     }
     @Override
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails){
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+604800000))
+                .signWith(SignatureAlgorithm.HS256,getSiginKey())
+                .compact();
+    }
+    @Override
     public String extractUserName(String token){
         return extractClaim(token, Claims::getSubject);
     }
@@ -31,7 +40,7 @@ public class JWTServiceImpl implements JWTService {
         return claimsResolvers.apply(claims);
     }
     private Key getSiginKey(){
-        byte[] key = DatatypeConverter.parseBase64Binary("RXNwcml0aWE=");
+        byte[] key = DatatypeConverter.parseBase64Binary("RXNwcml0aWE=RXNwcml0aWE=RXNwcml0aWE=RXNwcml0aWE=");
         return new SecretKeySpec(key, "HmacSHA256");
     }
 

@@ -28,9 +28,10 @@ public class User implements Serializable, UserDetails {
 	private Long id;
 
 	private String nom;
+	@Column(unique = true)
 	private String email;
 	private String motDePasse;
-	private boolean banned;
+	private boolean banned = false;
 	@Enumerated(EnumType.STRING)
 	private IRole role;
 
@@ -68,7 +69,7 @@ public class User implements Serializable, UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return banned;
+		return !banned;
 	}
 
 	@Override

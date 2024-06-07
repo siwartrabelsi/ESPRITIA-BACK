@@ -42,6 +42,11 @@ public class SecurityConfiguration {
                                 IRole.Membre.name(),
                                 IRole.President.name()
                         )
+                        //club routes are accessible on role membre and president
+                        .requestMatchers("/club").hasAnyAuthority(
+                                IRole.Membre.name(),
+                                IRole.President.name()
+                        )
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
