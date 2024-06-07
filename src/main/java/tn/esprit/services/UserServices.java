@@ -1,5 +1,8 @@
 package tn.esprit.services;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import tn.esprit.entities.User;
 import tn.esprit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +46,15 @@ public class UserServices implements IUserServices {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("user not found"));
+            }
+        };
     }
 }
