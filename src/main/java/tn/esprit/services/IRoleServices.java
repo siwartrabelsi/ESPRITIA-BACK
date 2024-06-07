@@ -1,4 +1,4 @@
-package tn.esprit.services;
+/*package tn.esprit.services;
 
 import tn.esprit.entities.Role;
 
@@ -9,3 +9,4 @@ public interface IRoleServices {
     public void deleteRole(long id);
     public Set<Role> displayRoles();
 }
+*/

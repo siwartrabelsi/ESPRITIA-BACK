@@ -1,4 +1,4 @@
-package tn.esprit.services;
+/*package tn.esprit.services;
 
 import tn.esprit.entities.Role;
 import tn.esprit.repositories.RoleRepository;
@@ -29,3 +29,4 @@ public class RoleServices implements IRoleServices {
         return new HashSet<>(roleRepository.findAll());
     }
 }
+*/

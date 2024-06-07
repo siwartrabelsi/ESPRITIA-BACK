@@ -1,4 +1,4 @@
-package tn.esprit.controllers;
+/*package tn.esprit.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,3 +35,4 @@ public class RoleController {
         return ResponseEntity.noContent().build();
     }
 }
+*/

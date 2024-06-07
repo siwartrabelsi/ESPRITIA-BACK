@@ -1,4 +1,4 @@
-package tn.esprit.entities;
+/*package tn.esprit.entities;
 
 import lombok.*;
 
@@ -19,3 +19,4 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private IRole name;
 }
+*/
