@@ -1,8 +1,7 @@
 package tn.esprit.entities;
 
-import lombok.*;
-
 import jakarta.persistence.*;
+import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
