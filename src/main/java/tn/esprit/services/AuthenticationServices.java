@@ -41,11 +41,9 @@ public class AuthenticationServices implements IAuthenticationServices {
                 ()->new IllegalArgumentException("invalid email or password")
         );
         var jwt = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(),user);
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
         jwtAuthenticationResponse.setToken(jwt);
         jwtAuthenticationResponse.setUser(user);
-        jwtAuthenticationResponse.setRefreshToken(refreshToken);
         return jwtAuthenticationResponse;
     }
 }

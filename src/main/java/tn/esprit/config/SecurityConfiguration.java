@@ -23,7 +23,7 @@ import tn.esprit.services.UserServices;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserServices userServices;
@@ -33,9 +33,9 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin").hasAnyAuthority(IRole.Admin.name())
-                        .requestMatchers("/user").hasAnyAuthority(
+                        .requestMatchers("/auth/**", "/admin/user", "/admin/user/**").permitAll()
+                        .requestMatchers("/jjj").hasAnyAuthority(IRole.Admin.name())
+                        .requestMatchers("/jjjjjjjjjjj").hasAnyAuthority(
                                 IRole.Passager.name(),
                                 IRole.Conducteur.name(),
                                 IRole.Organisateur.name(),

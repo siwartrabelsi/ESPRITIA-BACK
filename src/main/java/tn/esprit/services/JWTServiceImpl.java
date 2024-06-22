@@ -19,15 +19,7 @@ public class JWTServiceImpl implements JWTService {
     public String generateToken(UserDetails userDetails){
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-                .signWith(SignatureAlgorithm.HS256,getSiginKey())
-                .compact();
-    }
-    @Override
-    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails){
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+604800000))
+                //.setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
                 .signWith(SignatureAlgorithm.HS256,getSiginKey())
                 .compact();
     }
@@ -53,10 +45,8 @@ public class JWTServiceImpl implements JWTService {
 
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String username = extractUserName(token);
-        return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()));
     }
-    private boolean isTokenExpired(String token){
-        return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
+
 }
 

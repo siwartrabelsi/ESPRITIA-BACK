@@ -49,6 +49,19 @@ public class UserServices implements IUserServices {
     }
 
     @Override
+    public User bannirUnbanUser(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setBanned(!user.isBanned());
+            return userRepository.save(user);
+        } else {
+            // Handle the case where the user is not found
+            throw new UsernameNotFoundException("User with id " + id + " not found");
+        }
+    }
+
+    @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override

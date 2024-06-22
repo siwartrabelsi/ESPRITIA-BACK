@@ -8,5 +8,4 @@ import tn.esprit.entities.User;
 public class JwtAuthenticationResponse {
     private String token;
     private User user;
-    private String refreshToken;
 }
