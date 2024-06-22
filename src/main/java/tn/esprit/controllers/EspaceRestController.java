@@ -79,5 +79,9 @@ public class EspaceRestController {
             return new ResponseEntity<>("Could not upload the image", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/search")
+    public List<EspaceEvenement> searchespace(@RequestParam String nom) {
+        return espaces.findByNom(nom);
+    }
 
 }
