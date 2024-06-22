@@ -1,5 +1,6 @@
 package tn.esprit.services;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,9 @@ public class CovoiturageServices implements ICovoiturageServices {
         covoiturageRepository.save(covoiturage);
     }
 
-    public void deleteCovoiturage(Long userId, Long id) {
+    @Transactional
+    public void deleteCovoiturage(Long id, Long userId) {
         covoiturageRepository.deleteByIdAndUserId(id, userId);
     }
+
 }
