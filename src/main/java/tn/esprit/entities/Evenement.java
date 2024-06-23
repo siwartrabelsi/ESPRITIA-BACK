@@ -1,8 +1,10 @@
 package tn.esprit.entities;
 
-import lombok.*;
-
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 public class Evenement implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,6 +26,9 @@ public class Evenement implements Serializable {
     private Long id;
 
     private String nom;
+    private String affiche;
+
+    private Double rating;
 
     @Temporal(TemporalType.DATE)
     private Date date;
