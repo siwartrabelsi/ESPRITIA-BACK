@@ -1,12 +1,10 @@
 package tn.esprit.config;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,7 +31,7 @@ public class SecurityConfiguration{
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/admin/user", "/admin/user/**").permitAll()
+                        .requestMatchers("/auth/**", "/admin/user", "/admin/user/**", "/api/clubs/**", "/api/espace/**","/api/reservation/**","/api/reservation/**/**").permitAll()
                         .requestMatchers("/jjj").hasAnyAuthority(IRole.Admin.name())
                         .requestMatchers("/jjjjjjjjjjj").hasAnyAuthority(
                                 IRole.Passager.name(),
@@ -43,10 +41,10 @@ public class SecurityConfiguration{
                                 IRole.President.name()
                         )
                         //club routes are accessible on role membre and president
-                        .requestMatchers("/club").hasAnyAuthority(
+                       /* .requestMatchers("/club").hasAnyAuthority(
                                 IRole.Membre.name(),
                                 IRole.President.name()
-                        )
+                        )*/
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
