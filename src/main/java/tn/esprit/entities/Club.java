@@ -23,6 +23,8 @@ public class Club implements Serializable {
 
     private String nom;
     private String description;
+    private int nbLikes = 0;
+    private int nbDislikes = 0;
 
     @ManyToMany(mappedBy = "clubs")
     private Set<User> members = new HashSet<>();

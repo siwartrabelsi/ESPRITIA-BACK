@@ -10,4 +10,5 @@ public interface IEspaceService {
     public EspaceEvenement getEspaceById(Long id);
     public List<EspaceEvenement> getAllEspace();
     public void deleteEspace(Long id);
+    List<EspaceEvenement> findByNom(String nom);
 }
