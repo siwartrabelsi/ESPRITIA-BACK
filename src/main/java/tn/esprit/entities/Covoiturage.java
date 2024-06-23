@@ -1,8 +1,9 @@
 package tn.esprit.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,8 +25,14 @@ public class Covoiturage implements Serializable {
     private Date heureDepart;
 
     private String lieuDepart;
-//ceci est un commentaire
+    private String destination;
+    private int nbPlace;
+
+    @Enumerated(EnumType.STRING)
+    private IStatutCovoiturage status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }

@@ -1,10 +1,16 @@
 package tn.esprit.entities;
 
+
+import jakarta.persistence.*;
+import lombok.*;
+
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import jakarta.persistence.*;
 import tn.esprit.entities.Enums.TypeEquipement;
+
 
 import java.io.Serializable;
 import java.util.Set;
