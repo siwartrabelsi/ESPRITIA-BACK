@@ -41,4 +41,9 @@ public class EspaceServiceImpl implements IEspaceService {
         espaceRepository.deleteById(id);
 
     }
+
+    @Override
+    public List<EspaceEvenement> findByNom(String nom) {
+        return espaceRepository.findByNomContainingIgnoreCase(nom);
+    }
 }

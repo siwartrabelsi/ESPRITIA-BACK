@@ -1,10 +1,18 @@
 package tn.esprit.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.entities.EspaceEvenement;
 import tn.esprit.services.IEspaceService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -13,7 +21,7 @@ import java.util.List;
 public class EspaceRestController {
     @Autowired
     IEspaceService espaces;
-
+    private final String uploadDir = "uploads/";
     @PostMapping("/add")
     public EspaceEvenement addEspace(@RequestBody EspaceEvenement espace){
 
@@ -47,5 +55,33 @@ public class EspaceRestController {
     @DeleteMapping("/delete/{id}")
     public void deleteEspace(@PathVariable("id") Long id){
         espaces.deleteEspace(id);}
+
+    @PostMapping("/uploadImage/{id}")
+    public ResponseEntity<String> uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+        EspaceEvenement espace = espaces.getEspaceById(id);
+        if (espace == null) {
+            return new ResponseEntity<>("Espace not found", HttpStatus.NOT_FOUND);
+        }
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        try {
+            // Save the file to the server
+            Path path = Paths.get(uploadDir + fileName);
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+
+            // Update the espace with the path to the image
+            espace.setPhoto(path.toString());
+            espaces.updateEspace(espace);
+
+            return new ResponseEntity<>("Image uploaded successfully: " + fileName, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>("Could not upload the image", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/search")
+    public List<EspaceEvenement> searchespace(@RequestParam String nom) {
+        return espaces.findByNom(nom);
+    }
 
 }
