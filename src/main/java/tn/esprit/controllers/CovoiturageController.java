@@ -9,39 +9,39 @@ import tn.esprit.services.ICovoiturageServices;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users/{userId}/covoiturages")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@RequestMapping("/api/covoiturages")
+@CrossOrigin(origins = "http://localhost:4200")
 @AllArgsConstructor
 public class CovoiturageController {
 
     private final ICovoiturageServices covoiturageServices;
 
     @PostMapping
-    public void addCovoiturage(@PathVariable Long userId, @RequestBody Covoiturage covoiturage) {
-        covoiturageServices.addCovoiturage(userId, covoiturage);
+    public void addCovoiturage(@RequestBody Covoiturage covoiturage) {
+        covoiturageServices.addCovoiturage(1L, covoiturage);
     }
 
     @GetMapping("/{id}")
-    public Covoiturage getCovoiturageById(@PathVariable Long userId, @PathVariable Long id) {
-        return covoiturageServices.getCovoiturageById(userId, id);
+    public Covoiturage getCovoiturageById(@PathVariable Long id) {
+        return covoiturageServices.getCovoiturageById(1L, id);
     }
 
     @GetMapping
-    public List<Covoiturage> getAllCovoiturages(@PathVariable Long userId) {
-        return covoiturageServices.getAllCovoiturages(userId);
+    public List<Covoiturage> getAllCovoiturages() {
+        return covoiturageServices.getAllCovoiturages(1L);
     }
 
     @PutMapping("/{id}")
-    public void updateCovoiturage(@PathVariable Long userId, @PathVariable Long id, @RequestBody Covoiturage covoiturage) {
-        if (covoiturageServices.getCovoiturageById(userId, id) != null) {
+    public void updateCovoiturage(@PathVariable Long id, @RequestBody Covoiturage covoiturage) {
+        if (covoiturageServices.getCovoiturageById(1L, id) != null) {
             covoiturage.setId(id);
-            covoiturageServices.updateCovoiturage(userId, covoiturage);
+            covoiturageServices.updateCovoiturage(1L, covoiturage);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCovoiturage(@PathVariable Long userId, @PathVariable Long id) {
-        covoiturageServices.deleteCovoiturage(id, userId);
+    public ResponseEntity<Void> deleteCovoiturage(@PathVariable Long id) {
+        covoiturageServices.deleteCovoiturage(id, 1L);
         return ResponseEntity.noContent().build();
     }
 }

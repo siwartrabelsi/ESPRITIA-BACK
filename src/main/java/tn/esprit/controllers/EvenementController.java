@@ -29,7 +29,7 @@ public class EvenementController {
     private EvenementService evenementService;
     @Autowired
     private EvenementRepository evenementRepository;
-    public static String UPLOAD_DIRECTORY = "C:/Users/manel/Desktop/evenement-management/evenement-management/evenement-management/src/assets/";
+    public static String UPLOAD_DIRECTORY = "C:/Users/HP/Desktop/Espritia app/espritia-front/espritia-front/src/assets/";
 
     @GetMapping
     public List<Evenement> getAllEvenements() {
