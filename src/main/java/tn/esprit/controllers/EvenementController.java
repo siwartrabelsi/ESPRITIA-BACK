@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "*")
+
 
 @RequestMapping("/evenements")
 public class EvenementController {
@@ -29,7 +29,11 @@ public class EvenementController {
     private EvenementService evenementService;
     @Autowired
     private EvenementRepository evenementRepository;
-    public static String UPLOAD_DIRECTORY = "C:/Users/HP/Desktop/Espritia app/espritia-front/espritia-front/src/assets/";
+
+
+
+    public static String UPLOAD_DIRECTORY = "C:/Users/manel/Desktop/evenement-management debut/src/assets/";
+
 
     @GetMapping
     public List<Evenement> getAllEvenements() {
