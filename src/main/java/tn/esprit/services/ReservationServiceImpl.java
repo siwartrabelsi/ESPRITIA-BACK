@@ -6,6 +6,7 @@ import tn.esprit.entities.Reservation;
 import tn.esprit.repositories.ReservationRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationServiceImpl implements IReservation{
@@ -33,13 +34,29 @@ public class ReservationServiceImpl implements IReservation{
     @Override
     public Reservation getReservationById(Long id) {
 
-        return reservationRepository.findById(id).orElse(null);
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if (optionalReservation.isPresent()) {
+            Reservation reservation = optionalReservation.get();
+            // Accéder à l'ID de l'espace et le stocker dans la réservation
+            Long espaceId = reservation.getEspaceId();
+            // Faites ce que vous voulez avec espaceId
+            return reservation;
+        } else {
+            // Gérer le cas où la réservation n'est pas trouvée
+            return null;
+        }
     }
 
     @Override
     public List<Reservation> getAllReservation() {
 
-        return reservationRepository.findAll();
+        List<Reservation> reservations = reservationRepository.findAll();
+        for (Reservation reservation : reservations) {
+            // Accéder à l'ID de l'espace et le stocker dans la réservation
+            Long espaceId = reservation.getEspaceId();
+            // Faites ce que vous voulez avec espaceId
+        }
+        return reservations;
     }
 
     @Override
