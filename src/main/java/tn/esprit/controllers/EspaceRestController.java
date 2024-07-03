@@ -1,6 +1,7 @@
 package tn.esprit.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -84,4 +86,9 @@ public class EspaceRestController {
         return espaces.findByNom(nom);
     }
 
+    @GetMapping("/disponibilite")
+    public ResponseEntity<List<EspaceEvenement>> getAvailableSpaces(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<EspaceEvenement> espacesDisponibles = espaces.getEspacesDisponibles(date);
+        return ResponseEntity.ok().body(espacesDisponibles);
+    }
 }
