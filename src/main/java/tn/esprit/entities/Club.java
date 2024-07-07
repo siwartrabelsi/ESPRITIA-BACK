@@ -1,7 +1,12 @@
 package tn.esprit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -22,13 +27,30 @@ public class Club implements Serializable {
     private Long id;
 
     private String nom;
-    private String description;
+    private String objectif;
+    @Temporal(TemporalType.DATE)
+    private Date date;
     private int nbLikes = 0;
     private int nbDislikes = 0;
-
-    @ManyToMany(mappedBy = "clubs")
+    private int pointsFidelite = 0;
+    private double latitude;
+    private double longitude;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "club_user",
+            joinColumns = @JoinColumn(name = "club_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> members = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "club_evenement",
+            joinColumns = @JoinColumn(name = "club_id"),
+            inverseJoinColumns = @JoinColumn(name = "evenement_id"))
     private Set<Evenement> evenements = new HashSet<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    private Set<Formation> formations = new HashSet<>();
+
+
+
 }

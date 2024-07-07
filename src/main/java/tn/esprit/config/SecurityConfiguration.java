@@ -30,7 +30,7 @@ public class SecurityConfiguration{
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/admin/user", "/admin/user/**", "/api/clubs/**", "/api/espace/**","/api/reservation/**","/api/covoiturages/**","/evenements/**").permitAll()
+                        .requestMatchers("/auth/**", "/admin/user", "/admin/user/**", "/api/clubs/**", "/api/espace/**","/api/reservation/**","/api/covoiturages/**","/evenements/**","/api/formations/**","/api/participants/**").permitAll()
                         //.requestMatchers("/jjj").hasAnyAuthority(IRole.Admin.name())
                         /*.requestMatchers("/jjjjjjjjjjj").hasAnyAuthority(
                                 IRole.Passager.name(),
