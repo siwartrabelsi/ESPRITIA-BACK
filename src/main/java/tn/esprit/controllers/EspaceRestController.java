@@ -45,9 +45,13 @@ public class EspaceRestController {
         }
     }
     @GetMapping("/get/{id}")
-    public EspaceEvenement getCourById(@PathVariable("id")Long id){
-
-        return espaces.getEspaceById(id);
+    public ResponseEntity<EspaceEvenement> getEspaceById(@PathVariable("id") Long id) {
+        EspaceEvenement espace = espaces.getEspaceById(id);
+        if (espace != null) {
+            return ResponseEntity.ok().body(espace);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("/getAll")
     public List<EspaceEvenement> getAllEspace(){

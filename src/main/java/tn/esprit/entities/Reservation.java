@@ -35,4 +35,8 @@ public class Reservation {
     public Long getEspaceId() {
         return espace != null ? espace.getId() : null;
     }
+    public String getEspacenName() {
+        return espace != null ? espace.getNom() : null;
+    }
+
 }

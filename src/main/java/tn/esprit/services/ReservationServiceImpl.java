@@ -39,6 +39,7 @@ public class ReservationServiceImpl implements IReservation{
             Reservation reservation = optionalReservation.get();
             // Accéder à l'ID de l'espace et le stocker dans la réservation
             Long espaceId = reservation.getEspaceId();
+            String nomEspace = reservation.getEspacenName();
             // Faites ce que vous voulez avec espaceId
             return reservation;
         } else {
@@ -63,5 +64,10 @@ public class ReservationServiceImpl implements IReservation{
     public void deleteReservation(Long id) {
 
         reservationRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Object[]> countReservationsBySpaceAndDate() {
+        return reservationRepository.countReservationsBySpaceAndDate();
     }
 }
