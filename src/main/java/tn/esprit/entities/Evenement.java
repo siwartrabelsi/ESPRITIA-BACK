@@ -29,17 +29,30 @@ public class Evenement implements Serializable {
     private String affiche;
 
     private Double rating;
-
+    private int capacite;
+    private int nbrParticipant ;
+    private String siteweb ;
     @Temporal(TemporalType.DATE)
     private Date date;
-
+    @Temporal(TemporalType.DATE)
+    private Date dateFin;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisateur_id")
     private User organisateur;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="Membre_id")
+    private User membre;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "evenement_participants",
+            joinColumns = @JoinColumn(name = "evenement_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> participants = new HashSet<>();
 
     private String statut;
     @OneToMany(mappedBy = "evenement", cascade = CascadeType.ALL)
     private Set<EspaceEvenement> espaces = new HashSet<>();
     @ManyToMany
-    private Set<Club> clubs = new HashSet<>();
+    private Set<Club> clubs= new HashSet<>();
 }

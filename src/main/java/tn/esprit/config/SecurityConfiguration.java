@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tn.esprit.entities.IRole;
 import tn.esprit.services.UserServices;
 
 @Configuration
@@ -31,19 +32,19 @@ public class SecurityConfiguration{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/admin/user", "/admin/user/**", "/api/clubs/**", "/api/espace/**","/api/reservation/**","/api/covoiturages/**","/evenements/**").permitAll()
-                        //.requestMatchers("/jjj").hasAnyAuthority(IRole.Admin.name())
-                        /*.requestMatchers("/jjjjjjjjjjj").hasAnyAuthority(
+                        .requestMatchers("/jjj").hasAnyAuthority(IRole.Admin.name())
+                        .requestMatchers("/jjjjjjjjjjj").hasAnyAuthority(
                                 IRole.Passager.name(),
                                 IRole.Conducteur.name(),
                                 IRole.Organisateur.name(),
                                 IRole.Membre.name(),
                                 IRole.President.name()
-                        )*/
-                        //club routes are accessible on role membre and president
-                       /* .requestMatchers("/club").hasAnyAuthority(
+                        )
+//                        //club routes are accessible on role membre and president
+                        .requestMatchers("/club").hasAnyAuthority(
                                 IRole.Membre.name(),
                                 IRole.President.name()
-                        )*/
+                        )
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
