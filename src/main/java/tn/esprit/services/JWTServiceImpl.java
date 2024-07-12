@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -25,15 +24,21 @@ public class JWTServiceImpl implements JWTService {
     }
     @Override
     public String extractUserName(String token){
-        return extractClaim(token, Claims::getSubject);
+        try {
+            return extractClaim(token, Claims::getSubject);
+        } catch (io.jsonwebtoken.security.SecurityException e) {
+            // Log the exception or handle it accordingly
+            throw new RuntimeException("JWT parsing error: " + e.getMessage(), e);
+        }
     }
     private <T> T extractClaim(String token, Function<Claims,T> claimsResolvers){
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
     private Key getSiginKey(){
-        byte[] key = DatatypeConverter.parseBase64Binary("RXNwcml0aWE=RXNwcml0aWE=RXNwcml0aWE=RXNwcml0aWE=");
-        return new SecretKeySpec(key, "HmacSHA256");
+        String base64EncodedKey = "RXNwcml0aWEtRXNwcml0aWEtRXNwcml0aWEtRXNwcml0aWE=";
+        byte[] keyBytes = DatatypeConverter.parseBase64Binary(base64EncodedKey);
+        return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
     }
 
     public Claims extractAllClaims(String token) {
