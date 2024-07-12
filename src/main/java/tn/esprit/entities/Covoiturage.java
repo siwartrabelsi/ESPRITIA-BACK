@@ -35,4 +35,6 @@ public class Covoiturage implements Serializable {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    private String fumeur;
 }

@@ -1,8 +1,11 @@
 package tn.esprit.services;
 
 import tn.esprit.entities.Covoiturage;
+import tn.esprit.entities.IStatutCovoiturage;
 
+import java.util.Date;
 import java.util.List;
+
 
 public interface ICovoiturageServices {
     // Create
@@ -17,4 +20,9 @@ public interface ICovoiturageServices {
 
     // Delete
    void deleteCovoiturage(Long userId,Long id);
+    List<Covoiturage> searchCovoiturages(String fumeur, Date dateDepart, String lieuDepart, String destination);
+
+
+    void sendReservationEmail(Covoiturage covoiturage);
+
 }
