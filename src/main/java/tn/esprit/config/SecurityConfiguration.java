@@ -31,23 +31,25 @@ public class SecurityConfiguration{
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/admin/user", "/admin/user/**", "/api/clubs/**", "/api/espace/**","/api/reservation/**","/api/covoiturages/**","/evenements/**").permitAll()
-                        .requestMatchers("/jjj").hasAnyAuthority(IRole.Admin.name())
-                        .requestMatchers("/jjjjjjjjjjj").hasAnyAuthority(
-                                IRole.Passager.name(),
-                                IRole.Conducteur.name(),
-                                IRole.Organisateur.name(),
-                                IRole.Membre.name(),
-                                IRole.President.name()
-                        )
-//                        //club routes are accessible on role membre and president
-                        .requestMatchers("/club").hasAnyAuthority(
-                                IRole.Membre.name(),
-                                IRole.President.name()
-                        )
+                        .requestMatchers(
+                                "/auth/**",
+                                "/admin/user",
+                                "/admin/user/**",
+                                "/reclamation/**",
+                                "/api/clubs/**",
+                                "/api/espace/**",
+                                "/api/reservation/**",
+                                "/api/covoiturages/**",
+                                "/api/evenements/**",
+                                "/uploads/**",
+                                "/api/formations/**",
+                                "/api/participants/**",
+                                "/evenements/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
                 );

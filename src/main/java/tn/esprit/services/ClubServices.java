@@ -1,9 +1,16 @@
 package tn.esprit.services;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.entities.Club;
+import tn.esprit.entities.Evenement;
+import tn.esprit.entities.User;
 import tn.esprit.repositories.ClubRepository;
+import tn.esprit.repositories.EvenementRepository;
+import tn.esprit.repositories.UserRepository;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -18,16 +25,17 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ClubServices implements IClubServices {
 
     @Autowired
     private ClubRepository clubRepository;
+    @Autowired
+    private CloudinaryServiceImpl cloudinaryService;
+
 
     @Override
     public List<Club> findAll() {
@@ -59,37 +67,41 @@ public class ClubServices implements IClubServices {
         return null;
     }
 
-
     @Override
-    public List<Club> findByNom(String nom) {  // Assurez-vous que cette méthode est bien présente
+    public List<Club> findByNom(String nom) {
         return clubRepository.findByNomContainingIgnoreCase(nom);
     }
-@Override
+
+    @Override
     public Optional<Club> likeClub(Long id) {
         Optional<Club> clubOpt = clubRepository.findById(id);
         if (clubOpt.isPresent()) {
             Club club = clubOpt.get();
             club.setNbLikes(club.getNbLikes() + 1);
+            club.setPointsFidelite(club.getPointsFidelite() + 1);
             clubRepository.save(club);
         }
         return clubOpt;
     }
-@Override
+
+    @Override
     public Optional<Club> dislikeClub(Long id) {
         Optional<Club> clubOpt = clubRepository.findById(id);
         if (clubOpt.isPresent()) {
             Club club = clubOpt.get();
             club.setNbDislikes(club.getNbDislikes() + 1);
+            club.setPointsFidelite(club.getPointsFidelite() - 1);
             clubRepository.save(club);
         }
         return clubOpt;
     }
+
     @Override
     public byte[] generateQRCode(Long clubId) {
         Optional<Club> clubOpt = clubRepository.findById(clubId);
         if (clubOpt.isPresent()) {
             Club club = clubOpt.get();
-            String qrText = club.getNom() + " - " + club.getDescription();
+            String qrText = club.getNom() + " - " + club.getObjectif() + " - " + club.getDate();
 
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix bitMatrix;
@@ -126,7 +138,8 @@ public class ClubServices implements IClubServices {
                 document.open();
                 document.add(new Paragraph("Club Details"));
                 document.add(new Paragraph("Name: " + club.getNom()));
-                document.add(new Paragraph("Description: " + club.getDescription()));
+                document.add(new Paragraph("Objectif: " + club.getObjectif()));
+                document.add(new Paragraph("Date: " + club.getDate()));
                 document.close();
             } catch (DocumentException e) {
                 e.printStackTrace();
@@ -135,8 +148,6 @@ public class ClubServices implements IClubServices {
         }
         return null;
     }
-
-
 
     @Override
     public long getTotalClubCount() {
@@ -152,6 +163,24 @@ public class ClubServices implements IClubServices {
     public long getTotalDislikesCount() {
         return clubRepository.sumDislikes();
     }
-}
 
+    @Override
+    public int getPointsFidelite(Long clubId) {
+        Optional<Club> clubOpt = clubRepository.findById(clubId);
+        return clubOpt.map(Club::getPointsFidelite).orElse(0);
+    }
+    public Map uploadFile(Long clubId, MultipartFile file) throws IOException {
+        Optional<Club> clubOpt = clubRepository.findById(clubId);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            Map uploadResult = cloudinaryService.uploadFile(file);
+            String fileUrl = (String) uploadResult.get("url");
+            club.setPhoto(fileUrl);
+            clubRepository.save(club);
+            return uploadResult;
+        } else {
+            throw new EntityNotFoundException("Club not found");
+        }
+    }
+}
 

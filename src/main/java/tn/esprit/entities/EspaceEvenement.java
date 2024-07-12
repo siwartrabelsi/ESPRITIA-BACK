@@ -34,6 +34,8 @@ public class EspaceEvenement implements Serializable {
     private String description;
     private String adresse;
     private String photo ;
+    private double latitude;
+    private double longitude;
     @Enumerated(EnumType.STRING)
     private TypeEquipement equipement;
 

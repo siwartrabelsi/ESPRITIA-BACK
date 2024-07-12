@@ -1,19 +1,23 @@
 package tn.esprit.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.entities.EspaceEvenement;
+import tn.esprit.services.CloudinaryService;
 import tn.esprit.services.IEspaceService;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/espace")
@@ -21,7 +25,9 @@ import java.util.List;
 public class EspaceRestController {
     @Autowired
     IEspaceService espaces;
-    private final String uploadDir = "uploads/";
+   // private final String uploadDir = "uploads/";
+   @Autowired
+   private CloudinaryService cloudinaryService;
     @PostMapping("/add")
     public EspaceEvenement addEspace(@RequestBody EspaceEvenement espace){
 
@@ -43,9 +49,13 @@ public class EspaceRestController {
         }
     }
     @GetMapping("/get/{id}")
-    public EspaceEvenement getCourById(@PathVariable("id")Long id){
-
-        return espaces.getEspaceById(id);
+    public ResponseEntity<EspaceEvenement> getEspaceById(@PathVariable("id") Long id) {
+        EspaceEvenement espace = espaces.getEspaceById(id);
+        if (espace != null) {
+            return ResponseEntity.ok().body(espace);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("/getAll")
     public List<EspaceEvenement> getAllEspace(){
@@ -56,7 +66,7 @@ public class EspaceRestController {
     public void deleteEspace(@PathVariable("id") Long id){
         espaces.deleteEspace(id);}
 
-    @PostMapping("/uploadImage/{id}")
+   /* @PostMapping("/uploadImage/{id}")
     public ResponseEntity<String> uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
         EspaceEvenement espace = espaces.getEspaceById(id);
         if (espace == null) {
@@ -78,10 +88,33 @@ public class EspaceRestController {
         } catch (IOException e) {
             return new ResponseEntity<>("Could not upload the image", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
+   @PostMapping("/uploadImage/{id}")
+   public ResponseEntity<String> uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+       EspaceEvenement espace = espaces.getEspaceById(id);
+       if (espace == null) {
+           return new ResponseEntity<>("Espace not found", HttpStatus.NOT_FOUND);
+       }
+
+       try {
+           Map uploadResult = cloudinaryService.uploadFile(file);
+           String fileUrl = (String) uploadResult.get("url");
+           espace.setPhoto(fileUrl);
+           espaces.updateEspace(espace);
+
+           return new ResponseEntity<>("Image uploaded successfully: " + fileUrl, HttpStatus.OK);
+       } catch (IOException e) {
+           return new ResponseEntity<>("Could not upload the image", HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+   }
     @GetMapping("/search")
     public List<EspaceEvenement> searchespace(@RequestParam String nom) {
         return espaces.findByNom(nom);
     }
 
+    @GetMapping("/disponibilite")
+    public ResponseEntity<List<EspaceEvenement>> getAvailableSpaces(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<EspaceEvenement> espacesDisponibles = espaces.getEspacesDisponibles(date);
+        return ResponseEntity.ok().body(espacesDisponibles);
+    }
 }
