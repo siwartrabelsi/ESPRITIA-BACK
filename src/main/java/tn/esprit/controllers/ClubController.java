@@ -1,15 +1,23 @@
 package tn.esprit.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.entities.Club;
+import tn.esprit.services.CloudinaryServiceImpl;
 import tn.esprit.services.ClubServices;
+import tn.esprit.services.IClubServices;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/clubs")
@@ -114,5 +122,17 @@ public class ClubController {
     @GetMapping("/stats/total-dislikes")
     public long getTotalDislikesCount() {
         return clubService.getTotalDislikesCount();
+    }
+    @PostMapping("/uploadImage/{id}")
+    public ResponseEntity<String> uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            Map uploadResult = clubService.uploadFile(id, file);
+            String fileUrl = (String) uploadResult.get("url");
+            return new ResponseEntity<>("Image uploaded successfully: " + fileUrl, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>("Could not upload the image", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Club not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

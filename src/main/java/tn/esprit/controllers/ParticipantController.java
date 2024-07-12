@@ -63,4 +63,5 @@ public class ParticipantController {
         participantService.deleteParticipant(id);
         return ResponseEntity.ok().build();
     }
+
 }

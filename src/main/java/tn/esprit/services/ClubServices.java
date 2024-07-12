@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.entities.Club;
 import tn.esprit.entities.Evenement;
 import tn.esprit.entities.User;
@@ -24,10 +25,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +33,8 @@ public class ClubServices implements IClubServices {
 
     @Autowired
     private ClubRepository clubRepository;
+    @Autowired
+    private CloudinaryServiceImpl cloudinaryService;
 
 
     @Override
@@ -169,5 +169,18 @@ public class ClubServices implements IClubServices {
         Optional<Club> clubOpt = clubRepository.findById(clubId);
         return clubOpt.map(Club::getPointsFidelite).orElse(0);
     }
-
+    public Map uploadFile(Long clubId, MultipartFile file) throws IOException {
+        Optional<Club> clubOpt = clubRepository.findById(clubId);
+        if (clubOpt.isPresent()) {
+            Club club = clubOpt.get();
+            Map uploadResult = cloudinaryService.uploadFile(file);
+            String fileUrl = (String) uploadResult.get("url");
+            club.setPhoto(fileUrl);
+            clubRepository.save(club);
+            return uploadResult;
+        } else {
+            throw new EntityNotFoundException("Club not found");
+        }
+    }
 }
+

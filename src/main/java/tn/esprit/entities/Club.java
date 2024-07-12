@@ -35,6 +35,7 @@ public class Club implements Serializable {
     private int pointsFidelite = 0;
     private double latitude;
     private double longitude;
+    private String photo;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "club_user",
             joinColumns = @JoinColumn(name = "club_id"),

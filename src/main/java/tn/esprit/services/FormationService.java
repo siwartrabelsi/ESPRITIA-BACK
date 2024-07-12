@@ -11,6 +11,7 @@ import tn.esprit.repositories.FormationRepository;
 
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 @Transactional
@@ -61,4 +62,10 @@ public class FormationService implements IFormationService {
     public void deleteFormation(Long id) {
         formationRepository.deleteById(id);
     }
+    @Override
+    public List<Formation> getFormationsByNom(String nom) {
+        return formationRepository.findByNom(nom); // Supposant que votre repository possède une méthode findByNom
+    }
+
+
 }

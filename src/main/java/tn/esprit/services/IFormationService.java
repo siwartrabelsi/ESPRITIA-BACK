@@ -16,4 +16,6 @@ public interface IFormationService {
     Formation updateFormation(Long id, Formation formation);
 
     void deleteFormation(Long id);
+    List<Formation> getFormationsByNom(String nom);
+
 }

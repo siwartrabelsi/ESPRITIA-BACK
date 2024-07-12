@@ -9,6 +9,7 @@ import tn.esprit.services.FormationService;
 
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/formations")
@@ -60,4 +61,15 @@ public class FormationController {
         formationService.deleteFormation(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<Formation>> getFormationsByNom(@RequestParam String nom) {
+        List<Formation> formations = formationService.getFormationsByNom(nom);
+        if (!formations.isEmpty()) {
+            return ResponseEntity.ok(formations);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
 }
