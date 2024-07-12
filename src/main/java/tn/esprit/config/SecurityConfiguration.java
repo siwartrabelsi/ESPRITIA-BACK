@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tn.esprit.entities.IRole;
 import tn.esprit.services.UserServices;
 
 @Configuration
@@ -42,7 +43,8 @@ public class SecurityConfiguration{
                                 "/api/evenements/**",
                                 "/uploads/**",
                                 "/api/formations/**",
-                                "/api/participants/**"
+                                "/api/participants/**",
+                                "/evenements/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
