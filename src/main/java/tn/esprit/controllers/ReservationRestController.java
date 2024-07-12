@@ -51,4 +51,9 @@ public class ReservationRestController {
     @DeleteMapping("/delete/{id}")
     public void deleteReservation(@PathVariable("id") Long id){
         reservations.deleteReservation(id);}
+    // Endpoint pour récupérer le nombre de réservations par espace et date de début
+    @GetMapping("/countBySpaceAndDate")
+    public List<Object[]> countReservationsBySpaceAndDate() {
+        return reservations.countReservationsBySpaceAndDate();
+    }
 }

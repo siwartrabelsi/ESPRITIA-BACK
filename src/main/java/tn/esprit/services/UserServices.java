@@ -1,16 +1,15 @@
 package tn.esprit.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import tn.esprit.entities.IRole;
 import tn.esprit.entities.User;
 import tn.esprit.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServices implements IUserServices {
@@ -69,5 +68,23 @@ public class UserServices implements IUserServices {
                 return userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException("user not found"));
             }
         };
+    }
+    @Override
+    public Map<String, Long> getUsersByRole() {
+        List<Object[]> data = userRepository.countUsersByRole();
+        Map<String, Long> result = new HashMap<>();
+
+        for (Object[] row : data) {
+            IRole role = (IRole) row[0];
+            Long count = (Long) row[1];
+            result.put(role.name(), count);
+        }
+
+        return result;
+    }
+    @Override
+    public User getUserByUserName(String username){
+        Optional<User> user = userRepository.findByEmail(username);
+        return user.orElse(null);
     }
 }
