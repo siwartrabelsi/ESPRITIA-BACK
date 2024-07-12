@@ -32,4 +32,11 @@ public class Reservation {
     @JsonBackReference
     @ManyToOne
     private EspaceEvenement espace;
+    public Long getEspaceId() {
+        return espace != null ? espace.getId() : null;
+    }
+    public String getEspacenName() {
+        return espace != null ? espace.getNom() : null;
+    }
+
 }
