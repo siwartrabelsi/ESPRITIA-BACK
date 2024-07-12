@@ -1,9 +1,11 @@
 package tn.esprit.services;
 
+import jakarta.transaction.Transactional;
 import tn.esprit.entities.Club;
 
 import java.util.List;
 import java.util.Optional;
+
 
 public interface IClubServices {
     List<Club> findAll();
@@ -25,5 +27,10 @@ public interface IClubServices {
     long getTotalLikesCount();
 
     long getTotalDislikesCount();
+    // Méthode pour récupérer les points de fidélité d'un club
+    int getPointsFidelite(Long clubId);
+
+
+
 }
 

@@ -24,4 +24,6 @@ public class SignupRequest {
 
     @NotNull(message = "Role is required")
     private IRole role;
+    @NotBlank(message = "Phone is required")
+    private String phone;
 }

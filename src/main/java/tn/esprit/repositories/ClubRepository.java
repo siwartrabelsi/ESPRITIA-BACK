@@ -4,9 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import tn.esprit.entities.Club;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.EntityGraph;
 import java.util.List;
 
 public interface ClubRepository extends JpaRepository<Club, Long> {
+
 
 
     List<Club> findByNomContainingIgnoreCase(String nom);
@@ -20,4 +22,5 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     @Query("SELECT SUM(c.nbDislikes) FROM Club c")
     long sumDislikes();
+
 }

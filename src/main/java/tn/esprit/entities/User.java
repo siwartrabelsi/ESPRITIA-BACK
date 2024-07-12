@@ -1,5 +1,6 @@
 package tn.esprit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 public class User implements Serializable, UserDetails {
-
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,16 +33,19 @@ public class User implements Serializable, UserDetails {
 	@Column(unique = true)
 	private String email;
 	private String motDePasse;
+	private String phone;
 	private boolean banned = false;
 	@Enumerated(EnumType.STRING)
 	private IRole role;
-
+	@JsonIgnoreProperties("user")
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Reclamation> reclamations = new HashSet<>();
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Covoiturage> covoiturages = new HashSet<>();
 	@OneToMany(mappedBy = "organisateur", cascade = CascadeType.ALL)
 	private Set<Evenement> evenements = new HashSet<>();
+	private String resetCode;
+
 	@ManyToMany
 	@JoinTable(name = "user_club",
 			joinColumns = @JoinColumn(name = "user_id"),
