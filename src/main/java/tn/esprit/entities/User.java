@@ -40,8 +40,10 @@ public class User implements Serializable, UserDetails {
 	@JsonIgnoreProperties("user")
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Reclamation> reclamations = new HashSet<>();
+	@JsonIgnoreProperties("user")
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Covoiturage> covoiturages = new HashSet<>();
+	@JsonIgnoreProperties("organisateur")
 	@OneToMany(mappedBy = "organisateur", cascade = CascadeType.ALL)
 	private Set<Evenement> evenements = new HashSet<>();
 	private String resetCode;

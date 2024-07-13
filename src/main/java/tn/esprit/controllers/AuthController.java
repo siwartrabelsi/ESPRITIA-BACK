@@ -9,8 +9,12 @@ import tn.esprit.Dto.JwtAuthenticationResponse;
 import tn.esprit.Dto.ResetPasswordRequest;
 import tn.esprit.Dto.SiginRequest;
 import tn.esprit.Dto.SignupRequest;
+import tn.esprit.entities.Log;
 import tn.esprit.entities.User;
+import tn.esprit.repositories.LogRepository;
 import tn.esprit.services.IAuthenticationServices;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -19,6 +23,8 @@ import tn.esprit.services.IAuthenticationServices;
 public class AuthController {
     @Autowired
     private IAuthenticationServices authenticationServices;
+    @Autowired
+    private LogRepository logRepository;
     @PostMapping("signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest user) {
         try {
@@ -32,6 +38,10 @@ public class AuthController {
     public ResponseEntity<?> sigin(@RequestBody SiginRequest user) {
         try {
             JwtAuthenticationResponse loggedUser = authenticationServices.sigin(user);
+            Log log = new Log();
+            log.setEmail(user.getEmail());
+            log.setConnectionDate(LocalDateTime.now());
+            logRepository.save(log);
             return ResponseEntity.ok(loggedUser);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.entities.Log;
 import tn.esprit.entities.User;
+import tn.esprit.repositories.LogRepository;
 import tn.esprit.services.IUserServices;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +21,8 @@ import java.util.Set;
 public class AdminUserController {
     @Autowired
     private IUserServices userServices;
+    @Autowired
+    private LogRepository logRepository;
 
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody User user) {
@@ -63,6 +68,12 @@ public class AdminUserController {
     public ResponseEntity<User> bannirUnbanUser(@PathVariable Long id) {
         User user = userServices.bannirUnbanUser(id);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/logs")
+    public ResponseEntity<List<Log>> getAllLogs() {
+        List<Log> logs = logRepository.findAll();
+        return ResponseEntity.ok(logs);
     }
 
     @GetMapping("/charts")

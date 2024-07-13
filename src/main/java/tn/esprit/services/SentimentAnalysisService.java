@@ -23,7 +23,7 @@ public class SentimentAnalysisService implements ISentimentAnalysisService {
         StanfordCoreNLP pipeline;
         try {
             Properties props = new Properties();
-            props.setProperty("annotators", "sentiment");
+            props.setProperty("annotators", "tokenize,ssplit,parse,sentiment");
             pipeline = new StanfordCoreNLP(props);
         } catch (Exception e) {
             throw new RuntimeException("Error initializing StanfordCoreNLP pipeline", e);
